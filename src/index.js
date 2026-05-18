@@ -1,5 +1,6 @@
 import './env.js';
 import { checkDatabaseConnection } from './db.js';
+import { createClientAccountsTable, createApplicantsTable, seedCustomers } from './seed.js';
 
 async function main(){
     displayDatabaseConfig();
@@ -9,6 +10,10 @@ async function main(){
     } catch (err) {
         console.error('Failed to connect to the database:', err);
     }
+
+    await createClientAccountsTable();
+    await createApplicantsTable();
+    await seedCustomers();
 
     process.exit(0);
 }
