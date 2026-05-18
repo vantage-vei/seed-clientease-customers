@@ -1,0 +1,17 @@
+{
+  "name": "seed-clientease-customers",
+  "version": "1.0.0",
+  "description": "console app for seeding customer information from iwf db to clientease db",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "author": "lowie t. dichoson",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "pg": "^8.20.0"
+  }
+}
