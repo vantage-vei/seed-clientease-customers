@@ -1,19 +1,9 @@
 import pool from './db.js';
 
 export async function seedCustomers() {
-    const client = await pool.connect();
-    try {
-
-
-
-    } catch (err) {
-        throw err;
-    } finally {
-        client.release();
-    }
 }
 
-export async function createClientAccountsTable(){
+export async function createClientAccountsTable() {
     try {
 
         const doesTableExist = await pool.query('SELECT to_regclass(\'public.client_accounts\')');
@@ -27,7 +17,7 @@ export async function createClientAccountsTable(){
             CREATE TABLE client_accounts (
                 id                  SERIAL PRIMARY KEY,
                 account_no          VARCHAR(20) UNIQUE NOT NULL,
-                account_name        VARCHAR(255) NOT NULL,
+                account_name        TEXT NOT NULL,
                 distributor         VARCHAR(100),
                 category            VARCHAR(100),
                 no_of_applicants    INT,
@@ -36,7 +26,7 @@ export async function createClientAccountsTable(){
                 last_account_update DATE
             );`);
 
-        if (res.command === 'CREATE'){
+        if (res.command === 'CREATE') {
             console.log(`client_accounts table created successfully.`);
         }
 
@@ -67,10 +57,10 @@ export async function createApplicantsTable() {
                 email              VARCHAR(255)
             );`);
 
-        if (res.command === 'CREATE'){
+        if (res.command === 'CREATE') {
             console.log(`applicants table created successfully.`);
         }
-        
+
     } catch (err) {
         throw err;
     }
