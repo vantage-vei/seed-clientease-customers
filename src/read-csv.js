@@ -1,5 +1,6 @@
 import { createReadStream } from 'fs';
 import { parse } from 'csv-parse';
+import chalk from 'chalk';
 
 function parseBirthdate(value) {
     if (!value || value.trim() === '12/30/1899') return null;
@@ -24,6 +25,8 @@ export async function readCsv(filePath) {
                 })
             }))
             .on('data', (row) => {
+                if (!row['Account No.'] || !row['Account Name']) return;
+
                 const applicants = [];
 
                 for (let i = 1; i <= 5; i++) {
@@ -53,9 +56,11 @@ export async function readCsv(filePath) {
                 });
             })
             .on('end', () => {
+                console.log(chalk.green(`Finished reading CSV file. Total records: ${records.length}`));
                 resolve(records);
             })
             .on('error', (err) => {
+                console.error(chalk.red('Error reading CSV file:'), err);
                 reject(err);
             });
     });

@@ -1,4 +1,5 @@
 import pg from 'pg';
+import chalk from 'chalk';
 
 const { Pool } = pg;
 
@@ -11,13 +12,8 @@ const pool = new Pool({
 });
 
 export async function checkDatabaseConnection() {
-    try {
-        const res = await pool.query('SELECT NOW()');
-        console.log(`Database connection tested at: ${res.rows[0].now}`);
-
-    } catch (err) {
-        throw err;
-    }
+    const res = await pool.query('SELECT NOW()');
+    console.log(chalk.green(`Database connection tested at: ${res.rows[0].now}`));
 }
 
 export default pool;

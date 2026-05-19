@@ -1,41 +1,46 @@
 import './env.js';
 import { checkDatabaseConnection } from './db.js';
-import { 
-    createClientAccountsTable, 
-    createApplicantsTable, 
-    seedCustomers 
+import {
+    createClientAccountsTable,
+    createApplicantsTable,
+    seedCustomers
 } from './seed.js';
-import { readCsv } from './read-csv.js';
+import chalk from 'chalk';
+import pool from './db.js';
 
-async function main(){
+async function main() {
+    console.log(chalk.green('Starting application...'));
     displayDatabaseConfig();
 
     try {
         await checkDatabaseConnection();
 
-        const records = await readCsv('./iwf-client-list.csv');
+        await createClientAccountsTable();
+        await createApplicantsTable();
 
-        console.log(JSON.stringify(records[0], null, 2));
+        if (!process.env.CSV_FILE){
+            console.log(chalk.red('CSV_FILE environment variable is not set. Please provide the path to the CSV file.'));
+            process.exit(1);
+        }
+
+        await seedCustomers();
     } catch (err) {
-        console.error('Failed to connect to the database:', err);
+        console.error(chalk.red('Failed to process: '), err);
         process.exit(1);
+    } finally {
+        await pool.end();
     }
-
-    // await createClientAccountsTable();
-    // await createApplicantsTable();
-    // await seedCustomers();
-
     process.exit(0);
 }
 
 function displayDatabaseConfig() {
-    console.log('Database Configuration:');
-    console.log(`Host: ${process.env.DB_HOST}`);
-    console.log(`Port: ${process.env.DB_PORT}`);
-    console.log(`Database Name: ${process.env.DB_NAME}`);
-    console.log(`User: ${process.env.DB_USER}`);
+    console.log(chalk.blueBright('Database Configuration:'));
+    console.log(chalk.blueBright(`Host: [${process.env.DB_HOST}]`));
+    console.log(chalk.blueBright(`Port: [${process.env.DB_PORT}]`));
+    console.log(chalk.blueBright(`Database Name: [${process.env.DB_NAME}]`));
+    console.log(chalk.blueBright(`User: [${process.env.DB_USER}]`));
 }
 
 main().catch(err => {
-    console.error('An error occurred:', err);
+    console.error(chalk.red('An error occurred:'), err);
 });
