@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { createWriteStream } from 'fs';
 
-const TOTAL_ACCOUNTS = 200;
+const TOTAL_ACCOUNTS = 500;
 const OUTPUT_FILE = './mock-data.csv';
 
 const DISTRIBUTORS = ['TPA - Wealth', 'TPA - Ebusiness', 'TPA - Rampver', 'TPA - Novel Capital', 'PEMI', 'Directors'];
