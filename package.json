@@ -11,7 +11,8 @@
     "bundle": "esbuild src/index.js --bundle --platform=node --outfile=dist/bundle.cjs",
     "package": "pkg dist/bundle.cjs --targets node18-win-x64,node18-linux-x64 --output dist/seed-customers",
     "build": "npm run bundle && npm run package",
-    "generate-mock": "node scripts/generate-mock-csv.js"
+    "generate-mock": "node scripts/generate-mock-csv.js",
+    "report-issues": "node scripts/generate-issues-report.js"
   },
   "author": "lowie t. dichoson",
   "license": "ISC",

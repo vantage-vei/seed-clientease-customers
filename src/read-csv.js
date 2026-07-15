@@ -67,6 +67,8 @@ export async function readCsv(filePath) {
                         first_name: normalize(row[`applicant_${i}_First Name`]),
                         surname: normalize(row[`applicant_${i}_Surname`]),
                         birthdate: parseDate(row[`applicant_${i}_Birthdate`]),
+                        // kept for validation reporting — lets callers tell "no data" apart from an unparseable value
+                        birthdate_raw: normalize(row[`applicant_${i}_Birthdate`]),
                         email: normalize(row[`applicant_${i}_Email Address`]),
                     });
                 }

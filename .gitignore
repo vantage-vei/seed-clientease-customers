@@ -141,3 +141,7 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# local-only mock datasets
+mock-data2*.csv
+mock-data3*.csv

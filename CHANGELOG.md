@@ -15,6 +15,8 @@ Initial production release.
   - missing active status
   - missing/zero declared applicant count, or a mismatch between the declared count and the applicants actually present in the row
   - applicants missing a first name or surname
+  - applicants with an unparseable birthdate (e.g. mangled timestamps like `0077-07-18 00:00:00`); Excel zero-date sentinels still count as merely missing
+- Data-issues report script (`npm run report-issues -- <input.csv> [output.csv]`): writes a CSV of flagged accounts with per-account remarks.
 - Interactive database browser (`npm run browse`): list/describe/count tables, page through rows, and run ad-hoc SQL against the ClientEase database.
 - Additional mock dataset for testing (`mock-data1.csv`).
 

@@ -1,5 +1,16 @@
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Excel zero-date sentinels used as "no data" fillers in the exports —
+// treated as missing rather than invalid.
+const dateSentinels = new Set(['12/30/1899', '1/0/1900']);
+
+function birthdateIssue(applicant) {
+    if (applicant.birthdate || !applicant.birthdate_raw) return null;
+    if (dateSentinels.has(applicant.birthdate_raw)) return null;
+
+    return `invalid birthdate ("${applicant.birthdate_raw}")`;
+}
+
 export function emailIssue(value) {
     if (value === null) return 'missing';
     if (/^no data$/i.test(value)) return 'placeholder "No Data"';
@@ -36,6 +47,9 @@ export function getRecordIssues(record) {
 
         if (!applicant.first_name) issues.push(`${who}: missing first name`);
         if (!applicant.surname) issues.push(`${who}: missing surname`);
+
+        const bdIssue = birthdateIssue(applicant);
+        if (bdIssue) issues.push(`${who}: ${bdIssue}`);
     }
 
     return issues;
