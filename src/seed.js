@@ -1,13 +1,30 @@
 import pool from './db.js';
 import { readCsv } from './read-csv.js';
+import { getRecordIssues } from './validate.js';
 import chalk from 'chalk';
 
 export async function seedCustomers() {
     const client = await pool.connect();
 
     try {
-        const records = await readCsv(process.env.CSV_FILE);
+        const allRecords = await readCsv(process.env.CSV_FILE);
 
+        const records = [];
+        let skippedCount = 0;
+
+        for (const record of allRecords) {
+            const issues = getRecordIssues(record);
+
+            if (issues.length > 0) {
+                console.log(chalk.yellow(`Skipping account [${record.account_no}] - [${record.account_name}]: ${issues.join('; ')}`));
+                skippedCount++;
+                continue;
+            }
+
+            records.push(record);
+        }
+
+        console.log(chalk.yellow(`Skipped ${skippedCount} account(s) with data issues.`));
         console.log(chalk.yellow(`Seeding ${records.length} client accounts and their applicants...`));
 
         await client.query('BEGIN');
